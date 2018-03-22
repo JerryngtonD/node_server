@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>File Server</title>
+</head>
+<body>
+
+<form id="POST">
+    <input type="file" name="file">
+    <input type="submit" value="Загрузить">
+</form>
+
+<form id="DELETE">
+    <input type="text" name="file" placeholder="filename.ext">
+    <input type="submit" value="Удалить">
+</form>
+
+<form id="GET">
+    <input type="text" name="file" placeholder="filename.ext">
+    <input type="submit" value="Загрузить">
+</form>
+
+<script>
+
+    document.onsubmit = function(event) {
+        event.preventDefault();
+
+        const form = event.target;
+        if (!form.file.value) return;
+
+        //  /my/path/file.ext -> /file.ext
+        const fileUrl = '/' + form.file.value.replace(/.*[\\\/]/, '');
+
+        const xhr = new XMLHttpRequest();
+
+        xhr.onload = function() {
+            alert(`${xhr.status}: ${xhr.responseText}`);
+        };
+
+        switch(event.target.id) {
+            case 'POST':
+                xhr.open('POST', fileUrl);
+                xhr.send(form.file.files[0]);
+                break;
+
+            case 'DELETE':
+                xhr.open('DELETE', fileUrl);
+                xhr.send();
+                break;
+
+            case 'GET':
+                xhr.open('GET', fileUrl);
+                xhr.send();
+                break;
+        }
+
+    };
+
+</script>
+</body>
+</html>
