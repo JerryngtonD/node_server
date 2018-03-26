@@ -59,22 +59,10 @@ module.exports = http.createServer((req, res) => {
     }
 
     if (req.method === 'POST') {
-
-        if (!filename) {
-            res.statusCode = 404;
-            res.end('File not found');
-        }
         receiveFile(path.join(config.get('filesRoot'), filename), req, res);
-
     }
 
     if (req.method === 'DELETE') {
-
-        if (!filename) {
-            res.statusCode = 404;
-            res.end('File not found');
-        }
-
         fs.unlink(path.join(config.get('filesRoot'), filename), err => {
             if (err) {
                 if (err.code === 'ENOENT') {
